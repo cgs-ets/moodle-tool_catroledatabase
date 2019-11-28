@@ -107,7 +107,7 @@ if ($hassiteconfig) {
         $i++;
     }
     $rolenames = array_combine($roleid, $rolename);
-    $settings->add(new admin_setting_configmultiselect('tool_catroledatabase/role',
+    $settings->add(new admin_setting_configmultiselect('tool_catroledatabase/syncroles',
         get_string('syncroles', 'tool_catroledatabase'), '', array_keys($rolenames), $rolenames));
 
     $options = array('id' => 'id', 'idnumber' => 'idnumber', 'email' => 'email', 'username' => 'username');

@@ -77,11 +77,9 @@ class tool_catroledatabase_sync {
         $removeaction       = trim($this->config->removeaction); // 0 = remove, 1 = keep.
         // Get the roles we're going to sync.
         $syncroles = $this->config->syncroles;
-        var_export($syncroles);
-        exit;
 
         if (empty($catroletable) || empty($localuserfield) || empty($userfield) ||
-            empty($idnumberfield) || empty($rolefield)) {
+            empty($idnumberfield) || empty($rolefield) || empty($syncroles)) {
             $trace->output('Plugin config not complete.');
             $trace->finished();
             return 1;
@@ -119,13 +117,13 @@ class tool_catroledatabase_sync {
 
         // Get list of current category role assignments.
         $trace->output('Indexing current role assignments');
-
+        list($rolesql, $params) = $DB->get_in_or_equal($syncroles);
         $sql = "SELECT ra.userid as userid, c.instanceid as catid, ra.roleid
-        FROM {role_assignments} ra
-        INNER JOIN {context} c ON ra.contextid = c.id
-        WHERE ra.roleid = ?
-        AND c.contextlevel = ".CONTEXT_COURSECAT;
-        $rs = $DB->get_recordset_sql($sql, array($syncroles));
+                  FROM {role_assignments} ra
+            INNER JOIN {context} c ON ra.contextid = c.id
+                 WHERE ra.roleid $rolesql
+                   AND c.contextlevel = ".CONTEXT_COURSECAT;
+        $rs = $DB->get_recordset_sql($sql, $params);
 
         // Cache the role assignments in an associative array.
         foreach ($rs as $row) {
