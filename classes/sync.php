@@ -176,11 +176,11 @@ class tool_catroledatabase_sync {
 
                     if (isset($this->roleassignments[$category->id][$user->id][$role->id])) {
                         // This role already exists.
-                        $trace->output("Category role already assigned: $rowdesc");
+                        $trace->output("Skipping: Category role already assigned: $rowdesc", 1);
                         unset($this->roleassignments[$category->id][$user->id][$role->id]);
                     } else {
                         // Create the role.
-                        $trace->output("Assigning category role: $rowdesc");
+                        $trace->output("Assigning category role: $rowdesc", 1);
                         $catcontext = context_coursecat::instance($category->id);
                         role_assign($role->id, $user->id, $catcontext->id);
                     }
@@ -195,7 +195,7 @@ class tool_catroledatabase_sync {
             foreach ($this->roleassignments as $catid => $user) {
                 foreach ($user as $userid => $roleid) {
                     $rowdesc = $catid . " => " . $userid . " => " . $roleid;
-                    $trace->output("Unassigning: $rowdesc");
+                    $trace->output("Unassigning: $rowdesc", 1);
                     $catcontext = context_coursecat::instance($catid);
                     role_unassign($roleid, $userid, $catcontext->id);
                 }
