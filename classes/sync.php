@@ -151,7 +151,7 @@ class tool_catroledatabase_sync {
                         continue;
                     }
 
-                    $rowdesc = $fields[$idnumberfield] . " => " . $fields[$userid] . " => " . $fields[$rolefield];
+                    $rowdesc = $fields[$idnumberfield] . " => " . $fields[$userfield] . " => " . $fields[$rolefield];
 
                     $rolesearch['shortname'] = $fields[$rolefield];
                     if (!$role = $DB->get_record('role', $rolesearch, 'id', IGNORE_MULTIPLE)) {
