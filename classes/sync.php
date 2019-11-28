@@ -155,22 +155,22 @@ class tool_catroledatabase_sync {
 
                     $rolesearch['shortname'] = $fields[$rolefield];
                     if (!$role = $DB->get_record('role', $rolesearch, 'id', IGNORE_MULTIPLE)) {
-                        $trace->output("error: skipping '$rowdesc' due to unknown role shortname
-                            '$fields[$rolefield]'", 1);
+                        $err = "error: skipping '$rowdesc' due to unknown role shortname '$fields[$rolefield]'";
+                        $trace->output($err, 1);
                         continue;
                     }
 
                     $catsearch['idnumber'] = $fields[$idnumberfield];
                     if (!$category = $DB->get_record('course_categories', $catsearch, 'id', IGNORE_MULTIPLE)) {
-                        $trace->output("error: skipping '$rowdesc' due to unknown category idnumber
-                            '$fields[$idnumberfield]'", 1);
+                        $err = "error: skipping '$rowdesc' due to unknown category idnumber '$fields[$idnumberfield]'";
+                        $trace->output($err, 1);
                         continue;
                     }
 
                     $usersearch[$localuserfield] = $fields[$userfield];
                     if (!$user = $DB->get_record('user', $usersearch, 'id', IGNORE_MULTIPLE)) {
-                        $trace->output("error: skipping '$rowdesc' due to unknown user $localuserfield
-                            '$fields[$userfield]'", 1);
+                        $err = "error: skipping '$rowdesc' due to unknown user $localuserfield '$fields[$userfield]'";
+                        $trace->output($err, 1);
                         continue;
                     }
 
