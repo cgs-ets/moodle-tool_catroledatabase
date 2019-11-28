@@ -76,7 +76,7 @@ class tool_catroledatabase_sync {
         $rolefield          = strtolower(trim($this->config->rolefield));
         $removeaction       = trim($this->config->removeaction); // 0 = remove, 1 = keep.
         // Get the roles we're going to sync.
-        $syncroles = $this->config->syncroles;
+        $syncroles = explode(',', $this->config->syncroles);
 
         if (empty($catroletable) || empty($localuserfield) || empty($userfield) ||
             empty($idnumberfield) || empty($rolefield) || empty($syncroles)) {
