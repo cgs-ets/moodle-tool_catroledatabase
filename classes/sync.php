@@ -127,7 +127,7 @@ class tool_catroledatabase_sync {
 
         // Cache the role assignments in an associative array.
         foreach ($rs as $row) {
-            $this->roleassignments[$row->catid][$row->userid][$row->roleid] = $row->userid;
+            $this->roleassignments[$row->catid][$row->userid][$row->roleid] = $row->roleid;
         }
         $rs->close();
 
@@ -192,12 +192,14 @@ class tool_catroledatabase_sync {
         if (empty($removeaction) && !empty($this->roleassignments)) {
             // Unassign remaining category roles.
             $trace->output('Unassigning removed category roles');
-            foreach ($this->roleassignments as $catid => $user) {
-                foreach ($user as $userid => $roleid) {
-                    $rowdesc = $catid . " => " . $userid . " => " . $roleid;
-                    $trace->output("Unassigning: $rowdesc", 1);
-                    $catcontext = context_coursecat::instance($catid);
-                    role_unassign($roleid, $userid, $catcontext->id);
+            foreach ($this->roleassignments as $catid => $users) {
+                foreach ($users as $userid => $roles) {
+                    foreach ($roles as $roleid) {
+                        $rowdesc = $catid . " => " . $userid . " => " . $roleid;
+                        $trace->output("Unassigning: $rowdesc", 1);
+                        $catcontext = context_coursecat::instance($catid);
+                        role_unassign($roleid, $userid, $catcontext->id);
+                    }
                 }
             }
         }
